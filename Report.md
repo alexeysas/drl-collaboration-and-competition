@@ -75,27 +75,26 @@ Relu is used as activation function and dropout as regularization technique. Als
 
 ### Training
 
-Network was trained and environment was solved in 177 episodes. And result can be seen on the diagram below.
+Network was trained, and environment was solved in 713 episodes (score was greater than 0.5). After we trained agent till episode 2000 and the best average score reached ~2.07 at the episode 1400. It took more than 36 hours to train it over 2000 episodes. And result can be seen on the diagram below. Even there is some decreases in score - there still overall promising trend - so potentially it can reach higher result if continue to train this agent.  
 
 ![results][image10]
 
-Maximum average score over 100 episodes is 30.594. Which is pretty good result.
+Maximum average score over 100 episodes is 2.07. Which is pretty good result. Also, please note it is mean score across two agents so maximum score across two agents might be even higher.
 
-PParameters below works well for training.  Changes of most of them do not affect training process in a great way. However, during tons of experiments, I come up with two key components which reduces training time dramatically:
+Parameters below works well for training.  Changes of most of them do not affect training process in a great way. However, during tons of experiments, I come up with two key components which reduces training time dramatically:
 - Adding batch normalization layer to the critic network to the first layer reduced convergence time from 300 – 400 episodes to 170- 200 episodes with all other parameters fixed
 - Increase in memory buffer makes training process smoother and less volatile
 
 ```python
 
 hyperparams = { "BUFFER_SIZE" : int(1e6),  # replay buffer size
-                "BATCH_SIZE" : 1024,        # minibatch size
+                "BATCH_SIZE" : 2048,         # minibatch size
                 "GAMMA" : 0.99,             # discount factor
                 "TAU" : 1e-3,               # for soft update of target parameters
                 "LR" : 1e-4,                # learning rate 
                 "LEARN_EVERY" : 10,         # how often to update the network
-                "LEARN_ITERATIONS" : 10,    # how many iterations needed for each network update
+                "LEARN_ITERATIONS" : 20,    # how many iterations needed for each network update
               }
-              
 ```
 
 ### Next Steps
@@ -115,5 +114,5 @@ hyperparams = { "BUFFER_SIZE" : int(1e6),  # replay buffer size
 
 ### Sample
 
-Here is sample of performance of the DDPG agent with averege score 2.07: ![results][image10]
+Here is sample of performance of the DDPG agent with averege score 2.07: ![results][image11]
 
