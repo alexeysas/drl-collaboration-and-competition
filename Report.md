@@ -10,16 +10,22 @@
 [image8]: images/actor.png "Actor"
 [image9]: images/critic.png "Critic"
 [image10]: images/training.png "Training"
+[image11]: images/test.gif "sample"
 
 #  Continuous Control
 
 ### Goal
 
-The goal of the project is to train agent to Solve "Reacher" environment. You can find detailed description of the environment following the [link](README.md) 
+The goal of the project is to train agent to Solve "Tennis" environment. You can find detailed description of the environment following the [link](README.md) 
 
 ### Solution Summary
 
-To solve the environment we are going to use Deep deterministic policy gradient (DDPG) algorithm published in the [the Deepmind paper](https://arxiv.org/pdf/1509.02971.pdf). The idea of the algorithm is to combine [Policy gradient methods](http://www.scholarpedia.org/article/Policy_gradient_methods) to learn optimal policy together with [DQN algorithm](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf) to learn Q function. The problem with base DQN algorithm is that it can solve environments with discrete action space. However, most of the real-world tasks especially in the physical control domain has continues and high dimensional action spaces. DDPG algorithm was designed to solve these issues and learn policies in high-dimensional, continuous action spaces.
+To solve the environment, we tried MADDPG described in the [paper](https://papers.nips.cc/paper/7217-multi-agent-actor-critic-for-mixed-cooperative-competitive-environments.pdf). However, was not succeeded. So, realizing that even there are two agents they are acting mostly independently and the main goal is to hit the ball over the net - at it actually does not matter a lot if second agent is present on the other side of the net. (There is some cooperation in theory - to keep the ball as long in game as possible agents should hit balls in an easy way for other agent, however in practice racket is too fast and can easily reach any kind of opponent hit).    
+So we are going to use Deep deterministic policy gradient (DDPG) algorithm published in the [the Deepmind paper](https://arxiv.org/pdf/1509.02971.pdf) for this environment as well with some small improvements:  
+  - using shared experience buffer - so both agent will be contributing their experience in learning proceeds. 
+  - using different hyperparameters to make algorithm suitable for this exact environment
+
+The idea of the algorithm is to combine [Policy gradient methods](http://www.scholarpedia.org/article/Policy_gradient_methods) to learn optimal policy together with [DQN algorithm](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf) to learn Q function. The problem with base DQN algorithm is that it can solve environments with discrete action space. However, most of the real-world tasks especially in the physical control domain has continues and high dimensional action spaces. DDPG algorithm was designed to solve these issues and learn policies in high-dimensional, continuous action spaces.
 
 We have standard reinforcement learning setup where agent is interacting with environment in discrete timesteps. Environment has high-dimensional continues state space and high-dimensional continuous action spaces. We need to learn optimal policy:
 
@@ -109,5 +115,5 @@ hyperparams = { "BUFFER_SIZE" : int(1e6),  # replay buffer size
 
 ### Sample
 
-Here is sample of performance of the DDPG agent with averege score = 39.6:  https://github.com/alexeysas/drl-continuous-control/blob/master/samples/test.mp4
+Here is sample of performance of the DDPG agent with averege score 2.07: ![results][image10]
 
