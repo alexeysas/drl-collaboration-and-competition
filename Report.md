@@ -12,7 +12,7 @@
 [image10]: images/training.png "Training"
 [image11]: images/test.gif "sample"
 
-#  Continuous Control
+# Collaboration and Competition
 
 ### Goal
 
@@ -61,7 +61,7 @@ Please note that there are two additional ideas used to improve algorithm conver
 
 ### Network archtiecture
 
-The overall architectures we come up with which provide good training results for the Reacher environment are presented on the images below:
+The overall architectures we come up with which provide good training results for the Tennis environment are presented on the images below (mostly it is close to the archtiecture which helped to solve Reacher environment):
 
 Policy network (Actor)
 
@@ -81,9 +81,10 @@ Network was trained, and environment was solved in 713 episodes (score was great
 
 Maximum average score over 100 episodes is 2.07. Which is pretty good result. Also, please note it is mean score across two agents so maximum score across two agents might be even higher.
 
-Parameters below works well for training.  Changes of most of them do not affect training process in a great way. However, during tons of experiments, I come up with two key components which reduces training time dramatically:
-- Adding batch normalization layer to the critic network to the first layer reduced convergence time from 300 – 400 episodes to 170- 200 episodes with all other parameters fixed
-- Increase in memory buffer makes training process smoother and less volatile
+Parameters below works well for training. The most important things which makes training process to converge compared to the "Reacher" environment are:
+- Reduce Noise parameters to:  mu=0., theta=0.1, sigma=0.1
+- Increase batch size to 2048
+- Increase dropout probability
 
 ```python
 
@@ -99,7 +100,9 @@ hyperparams = { "BUFFER_SIZE" : int(1e6),  # replay buffer size
 
 ### Next Steps
 
-1. As standard DQN approach is used to learn Q value function in the DDPG it might be considered to try possible DQN imporvements described in the [Rainbow paper](https://arxiv.org/pdf/1710.02298.pdf) to improve training performance.
+1. As this Multi-agent environment the next steps is to implement working version of MADDPG algorithm as in theory there is some cooperation and it might work better with proper parameters tuning.
+
+2. Both DDPG and MADDPG use standard DQN approach to learn Q value function. So it might be considered to try possible DQN improvements described in the [Rainbow paper](https://arxiv.org/pdf/1710.02298.pdf) to improve training performance for both algorithms.
 
    - [Dueling DQN](https://arxiv.org/abs/1511.06581)
    - [The Double DQN](https://arxiv.org/abs/1509.06461)
@@ -107,10 +110,7 @@ hyperparams = { "BUFFER_SIZE" : int(1e6),  # replay buffer size
    - [Distributional RL](https://arxiv.org/abs/1707.06887)
    - [Noisy nets](https://arxiv.org/abs/1706.10295)
 
-
-2. Also with slight modification we can apply DDPG algorithm to multiagent environment. The idea there is to have shared experience buffer and single brain for all agents. There might be an improvement in training as agents observe different experience.
-
-3. Finally, we want to implement other Policy gradient methods such as [Proximal Policy Optimization](https://arxiv.org/abs/1707.06347) or Actor-Critic methods such as A3C: Asynchronous Advantage Actor-Critic and compare their performance for the "Reacher" environemnt.
+3. Also we might want to train agent a little bit longer as there is still promising trend so potentially we can get better score 
 
 ### Sample
 
